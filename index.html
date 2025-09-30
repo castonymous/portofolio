@@ -36,9 +36,33 @@
     .nav .links{display:flex;gap:.25rem}
 
     /* ——— Hero ——— */
-    .hero{position:relative;min-height:calc(100svh - 56px);display:grid;place-items:center;overflow:hidden}
-    .hero .stars{position:absolute;inset:-10%;background:radial-gradient(1200px 600px at 50% -10%,rgba(13,255,255,.08),transparent 60%),radial-gradient(1000px 600px at 80% 30%,rgba(255,255,255,.05),transparent 50%),radial-gradient(800px 500px at 20% 70%,rgba(13,255,255,.04),transparent 50%)}
-    .hero .content{position:relative;z-index:1;text-align:center}
+.hero {
+  position: relative;
+  min-height: calc(100svh - 56px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* bukan center */
+  padding-top: 80px; /* kasih ruang atas */
+}
+
+.hero-text {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 820px;
+  margin: 0 auto;
+  padding-inline: 24px;
+}
+
+.hero-mockup {
+  position: absolute; /* kunci di tengah */
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(1000px, 90%);
+  z-index: 1;
+}
+
     .eyebrow{display:inline-block;margin-bottom:12px}
     h1{margin:0;font-size:clamp(2.2rem,7vw,4rem);letter-spacing:-.02em;line-height:1.1}
     .lede{margin:16px auto 24px;max-width:740px;color:var(--muted);font-size:clamp(1rem,1.6vw,1.05rem)}
@@ -115,23 +139,26 @@
   </nav>
 
   <!-- Hero -->
-  <header id="home" class="hero">
-    <div class="stars" aria-hidden="true"></div>
-    <div class="wrap content">
-      <span class="eyebrow chip">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.09 6.26L20 9.27l-5 3.64L16.18 20 12 16.9 7.82 20 9 12.91l-5-3.64 5.91-.99z"/></svg>
-        <span id="roleSwitcher">Content Creator</span>
-      </span>
-      <h1>Casto Niox — <span id="typed-text" class="muted">Membuat kerjaan jadi gampang.</span></h1>
-      <p class="lede">Content creator di YouTube, TikTok, Instagram, Facebook. Desainer grafis & otomasi cetak. Teknisi reparasi HP — rooting, modding, flash, dan reset. Mahasiswa Sistem Informasi di Universitas Terbuka.</p>
-      <div style="display:flex;gap:.6rem;justify-content:center">
-        <a class="btn primary" href="#work">Lihat Karya</a>
-        <a class="btn ghost" href="#contact">Hubungi</a>
-      </div>
-      <div aria-hidden="true" style="height:32px"></div>
-      <div class="device reveal"><span class="screen" id="parallax"></span><span class="notch"></span></div>
+<header id="home" class="hero">
+  <div class="stars"></div>
+
+  <div class="hero-text">
+    <span class="eyebrow chip">★ <span id="roleSwitcher">Content Creator</span></span>
+    <h1>Casto Niox — <span id="typed-text" class="muted">Membuat kerjaan jadi gampang.</span></h1>
+    <p class="lede">Content creator di YouTube, TikTok, Instagram, Facebook. Desainer grafis & otomasi cetak. Teknisi reparasi HP — rooting, modding, flash, dan reset. Mahasiswa Sistem Informasi di Universitas Terbuka.</p>
+    <div style="display:flex;gap:.6rem;justify-content:center">
+      <a class="btn primary" href="#work">Lihat Karya</a>
+      <a class="btn ghost" href="#contact">Hubungi</a>
     </div>
-  </header>
+  </div>
+
+  <div class="hero-mockup">
+    <div class="device">
+      <span class="screen"></span>
+    </div>
+  </div>
+</header>
+
 
   <!-- Work -->
   <section id="work">
