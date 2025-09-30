@@ -241,6 +241,31 @@
     </div>
   </div>
 </section>
+<section aria-labelledby="konten">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="kicker">Konten</div>
+        <h2 id="konten">Video YouTube Pilihan</h2>
+      </div>
+      <a class="btn ghost" href="https://www.youtube.com/@castoniox" target="_blank" rel="noreferrer">Channel →</a>
+    </div>
+    <div class="card reveal" style="grid-column:span 12">
+      <div class="yt">
+        <iframe 
+          src="https://www.youtube-nocookie.com/embed/De5ykOBJ3dI?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&modestbranding=1&loop=1&playlist=De5ykOBJ3dI"
+          title="YouTube video player"
+          frameborder="0"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowfullscreen
+          loading="lazy"
+          style="width:100%;height:100%;border:0">
+        </iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 
   <!-- Tentang + Sosmed ikon -->
@@ -260,6 +285,7 @@
                • <strong>Desainer</strong> — identitas visual, layout ID card, otomasi percetakan.<br>
                • <strong>Teknisi</strong> — perbaikan software & hardware HP.<br>
                • <strong>Mahasiswa</strong> — Sistem Informasi, Universitas Terbuka.</p>
+          </br>
             <div class="socials" aria-label="Sosial">
               <a href="https://www.instagram.com/castoniox" target="_blank" rel="noreferrer" aria-label="Instagram">
                 <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm6-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zM12 9a3 3 0 1 1 0 6 3 3 0 0 1 0-6z"/></svg>
@@ -343,25 +369,6 @@
       const y=window.scrollY; if(prefersReduced) return;
       screenEl.style.transform = `translateY(${y*0.05}px)`;
     }, {passive:true});
-
-    // Lightweight YouTube loader (no-refuse, privacy-enhanced)
-    document.querySelectorAll('.yt').forEach(wrapper=>{
-      const id = (wrapper.getAttribute('data-ytid')||'').trim();
-      if(!id){ wrapper.innerHTML = '<div style="display:grid;place-items:center;height:100%;color:#888">Set data-ytid</div>'; return; }
-      // update thumbnail src
-      const img = wrapper.querySelector('.thumb');
-      if(img){ img.src = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`; }
-      const btn = wrapper.querySelector('.play');
-      const makeIframe = ()=>{
-        const iframe = document.createElement('iframe');
-        iframe.width='560'; iframe.height='315';
-        iframe.style.width='100%'; iframe.style.height='100%'; iframe.style.border='0';
-        iframe.allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-        iframe.setAttribute('allowfullscreen','');
-        // gunakan youtube-nocookie & path /embed agar tidak ditolak
-        iframe.src = `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1`;
-        wrapper.replaceChildren(iframe);
-      };
       btn?.addEventListener('click', makeIframe, {once:true});
       // Optional: auto-load saat di viewport
       const ob = new IntersectionObserver((es)=>{ es.forEach(e=>{ if(e.isIntersecting){ ob.disconnect(); } }); });
