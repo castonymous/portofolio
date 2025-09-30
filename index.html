@@ -140,6 +140,24 @@
   .device::before{ width:120px; height:16px; }
 }
 
+
+/* === Mobile - narrower hero & smaller mockup to avoid cropping === */
+html,body{overflow-x:hidden}
+@media (max-width:640px){
+  .hero-text{max-width:520px;padding-inline:16px}
+  .hero h1{font-size:clamp(1.8rem, 8vw, 2.4rem); line-height:1.15}
+  .lede{font-size:0.95rem}
+  .chip{transform:scale(.95)}
+  .hero{padding-top:68px; padding-bottom: clamp(140px, 48vw, 240px)}
+  .hero-mockup{width:78vw}
+  .device{border-radius:22px}
+  .device::before{width:100px;height:14px;border-radius:0 0 10px 10px}
+  .screen{inset:10px;border-radius:16px}
+  .browser-top{gap:10px;padding:8px 10px}
+  .address{padding:6px 8px}
+  .browser-body{padding:10px}
+}
+
 </style>
 </head>
 <body>
