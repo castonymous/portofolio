@@ -217,24 +217,31 @@
   </section>
 
   <!-- YouTube preview: klik untuk load iframe (no "refused") -->
-  <section aria-labelledby="konten">
-    <div class="wrap">
-      <div class="sec-head">
-        <div>
-          <div class="kicker">Konten</div>
-          <h2 id="konten">Video YouTube Pilihan</h2>
-        </div>
-        <a class="btn ghost" href="https://www.youtube.com/@castoniox" target="_blank" rel="noreferrer">Channel →</a>
+<section aria-labelledby="konten">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="kicker">Konten</div>
+        <h2 id="konten">Video YouTube Pilihan</h2>
       </div>
-      <div class="card reveal" style="grid-column:span 12">
-        <!-- GANTI data-ytid dengan ID videomu, contoh: dQw4w9WgXcQ -->
-        <div class="yt" data-ytid="De5ykOBJ3dI">
-          <img class="thumb" alt="YouTube thumbnail" loading="lazy" src="https://i.ytimg.com/vi/VIDEO_ID/hqdefault.jpg"/>
-          <button class="play" type="button" aria-label="Putar video">▶️ Putar</button>
-        </div>
+      <a class="btn ghost" href="https://www.youtube.com/@castoniox" target="_blank" rel="noreferrer">Channel →</a>
+    </div>
+    <div class="card reveal" style="grid-column:span 12">
+      <div class="yt">
+        <iframe 
+          src="https://www.youtube-nocookie.com/embed/De5ykOBJ3dI?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&modestbranding=1&loop=1&playlist=De5ykOBJ3dI"
+          title="YouTube video player"
+          frameborder="0"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowfullscreen
+          loading="lazy"
+          style="width:100%;height:100%;border:0">
+        </iframe>
       </div>
     </div>
-  </section>
+  </div>
+</section>
+
 
   <!-- Tentang + Sosmed ikon -->
   <section id="about">
@@ -283,8 +290,7 @@
 
   <footer>
     <div class="wrap foot">
-      <span>© <span id="year"></span> Casto Niox — OIS Grafika.</span>
-      <span class="muted">Dibangun dengan HTML+CSS. Content creator & teknisi.</span>
+      <span>© <span id="year"></span> Casto Niox.</span>
     </div>
   </footer>
 
