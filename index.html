@@ -54,7 +54,51 @@
     .hero-mockup{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:min(1000px,88vw);pointer-events:none}
     .device{position:relative;width:100%;aspect-ratio:10/6;border-radius:30px;background:linear-gradient(180deg,#0f0f11,#050506);border:1px solid #1b1b1d;box-shadow:0 30px 80px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.04);overflow:hidden}
     .device::before{content:"";position:absolute;top:8px;left:50%;transform:translateX(-50%);width:160px;height:20px;border-radius:0 0 14px 14px;background:#000;border:1px solid #1a1a1a}
-    .screen{position:absolute;inset:14px;border-radius:22px;background:conic-gradient(from 210deg at 60% 40%, #0df, #7af, #08f, #0df);opacity:.35;mix-blend-mode:screen;transition:transform .3s ease}
+    /* screen is inner browser mock */
+    .screen{position:absolute;inset:14px;border-radius:22px;background:#f6f7f9;overflow:hidden;color:#111;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial, sans-serif;/* will style inside */}
+
+    /* browser chrome (address bar) */
+    .browser {
+      height:100%;
+      display:flex;
+      flex-direction:column;
+    }
+    .browser-top {
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding:12px 14px;
+      background:linear-gradient(180deg,#f3f4f6,#eef0f3);
+      border-bottom:1px solid #e0e3e6;
+    }
+    .browser-dots { display:flex; gap:8px; align-items:center; }
+    .dot { width:12px; height:12px; border-radius:50%; background:#ff5f56; box-shadow:0 0 0 2px rgba(0,0,0,.02) inset }
+    .dot.b2 { background:#ffbe2e }
+    .dot.b3 { background:#27c93f }
+    .address {
+      flex:1;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background:white;
+      padding:8px 12px;
+      border-radius:12px;
+      box-shadow:0 1px 0 rgba(0,0,0,.03) inset;
+      font-size:14px;
+      color:#333;
+    }
+    .address .favicon { width:16px; height:16px; border-radius:3px; background:#eee; display:inline-block }
+    .address .text { flex:1; min-width:0; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; color:#666 }
+    .browser-body { padding:14px; overflow:auto; flex:1; background:linear-gradient(180deg,#fff,#fbfdff); }
+
+    /* search result style */
+    .search-line { margin-bottom:12px; }
+    .search-title { font-weight:600; color:#1a1a1a; font-size:15px; }
+    .search-url { font-size:13px; color:#0a84ff; margin-bottom:4px; }
+    .search-snippet { font-size:14px; color:#555; }
+
+    /* monospace command line for 'searching' */
+    .searching { font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,monospace; color:#1a1a1a; font-size:13px; margin-bottom:10px; }
 
     /* ——— Sections ——— */
     section{padding:72px 0;border-top:1px solid #111}
@@ -88,7 +132,11 @@
 
     /* ——— Responsive ——— */
     @media (max-width:980px){.card{grid-column:span 12}}
-    @media (max-width:640px){.hero{min-height:70svh}.foot{flex-direction:column;gap:10px}}
+    @media (max-width:640px){
+      .hero{min-height:70svh}.foot{flex-direction:column;gap:10px}
+      .browser-top{padding:10px}
+      .address{font-size:13px;padding:6px 10px}
+    }
 
     /* ——— Scroll reveal ——— */
     .reveal{opacity:0;transform:translateY(12px);transition:opacity .6s ease, transform .6s ease}
@@ -136,7 +184,28 @@
     <!-- Hero mockup (fixed, tidak ikut geser teks) -->
     <div class="hero-mockup">
       <div class="device" id="device">
-        <span class="screen" id="screen"></span>
+        <!-- REPLACE screen: fake browser UI -->
+        <div class="screen" role="img" aria-label="Simulasi browser menampilkan profil Casto">
+          <div class="browser" id="browserScreen">
+            <div class="browser-top">
+              <div class="browser-dots" aria-hidden="true">
+                <span class="dot"></span>
+                <span class="dot b2"></span>
+                <span class="dot b3"></span>
+              </div>
+              <div class="address" aria-hidden="true">
+                <span class="favicon" style="background:linear-gradient(45deg,#0df,#06f)"></span>
+                <div class="text" id="addressText">https://www.google.com/search?q=Casto+Niox</div>
+                <div style="opacity:.6;font-size:13px;margin-left:8px">🔍</div>
+              </div>
+            </div>
+            <div class="browser-body" id="browserBody" aria-live="polite">
+              <!-- JS will populate search lines here -->
+              <div class="searching" id="searchingLine">Searching: <span id="searchQuery"></span><span id="cursor">▌</span></div>
+              <div id="results"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -217,7 +286,7 @@
     </div>
   </section>
 
-  <!-- YouTube autoplay, no controls -->
+  <!-- YouTube autoplay, no controls (optional other section) -->
   <section aria-labelledby="konten">
     <div class="wrap">
       <div class="sec-head">
@@ -270,11 +339,11 @@
                 <span>castoniox</span>
               </a>
               <a href="https://www.youtube.com/@castoniox" target="_blank" rel="noreferrer" aria-label="YouTube">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.7 3.5 12 3.5 12 3.5s-7.7 0-9.4.6A3 3 0 0 0 .5 6.2 31.7 31.7 0  0 0 0 12a31.7 31.7 0  0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.7.6 9.4.6 9.4.6s7.7 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.7 31.7 0 0 0 24 12a31.7 31.7 0 0 0-.5-5.8zM9.5 15.5v-7l6 3.5-6 3.5z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.7 3.5 12 3.5 12 3.5s-7.7 0-9.4.6A3 3 0 0 0 .5 6.2 31.7 31.7 0 0 0 0 12a31.7 31.7 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.7.6 9.4.6 9.4.6s7.7 0 9.4-.6a3 3 0 0 0 2.1-2.1A31.7 31.7 0 0 0 24 12a31.7 31.7 0 0 0-.5-5.8zM9.5 15.5v-7l6 3.5-6 3.5z"/></svg>
                 <span>@castoniox</span>
               </a>
               <a href="https://www.tiktok.com/@castoniox" target="_blank" rel="noreferrer" aria-label="TikTok">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 8.1a6.7 6.7 0 0 1-4.6-1.6V16a6 6 0 1 1-6-6c.3 0 .6 0 .9.1v3.1a2.9 2.9 0 0 0-.9-.1 3 3 0  1 0 3 3V2h3a6.7 6.7 0 0 0 4.6 4.2V8z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 8.1a6.7 6.7 0 0 1-4.6-1.6V16a6 6 0 1 1-6-6c.3 0 .6 0 .9.1v3.1a2.9 2.9 0 0 0-.9-.1 3 3 0 1 0 3 3V2h3a6.7 6.7 0 0 0 4.6 4.2V8z"/></svg>
                 <span>@castoniox</span>
               </a>
               <a href="https://github.com/castonymous" target="_blank" rel="noreferrer" aria-label="GitHub">
@@ -321,7 +390,7 @@
       });
     });
 
-    // Typed text (tanpa library) — ringan
+    // Typed text (hero) — ringan
     const typedTexts=["Content Creator","Teknisi","Desainer","Content Creator","Gamer","Web Developer"];
     let tt_i=0, tt_pos=0, tt_back=false; const typedEl=document.getElementById('typed-text');
     function typeLoop(){
@@ -338,11 +407,144 @@
     setInterval(()=>{ r=(r+1)%roles.length; roleEl.textContent=roles[r]; }, 2200);
 
     // Parallax halus pada screen (tidak mempengaruhi layout teks)
-    const screenEl=document.getElementById('screen');
+    const screenEl=document.getElementById('device').querySelector('.screen');
     window.addEventListener('scroll', ()=>{
       const y=window.scrollY; if(prefersReduced) return;
-      screenEl.style.transform = `translateY(${y*0.05}px)`;
+      screenEl.style.transform = `translateY(${y*0.03}px)`;
     }, {passive:true});
+
+    /* ===========================
+       Fake Browser Search Animation
+       =========================== */
+    (function(){
+      if (prefersReduced) {
+        // If user prefers reduced motion, show static content
+        const res = document.getElementById('results');
+        res.innerHTML = '<div class="search-title">Casto Niox</div><div class="search-snippet">Content creator, desainer, teknisi reparasi HP — @castoniox</div>';
+        document.getElementById('searchingLine').style.display = 'none';
+        return;
+      }
+
+      const queries = [
+        "Casto Niox",
+        "CastoNiox YouTube",
+        "CastoNiox TikTok",
+        "CastoNiox GitHub",
+        "OIS Grafika Shopee"
+      ];
+
+      // static mapping of fake results for each query
+      const fakeDB = {
+        "Casto Niox": [
+          {title:"Casto Niox — YouTube", url:"youtube.com/@castoniox", snippet:"Tutorial rooting, flashing, modding, dan tips servis HP."},
+          {title:"Instagram @castoniox", url:"instagram.com/castoniox", snippet:"Koleksi konten & behind the scenes."},
+          {title:"GitHub castonymous", url:"github.com/castonymous", snippet:"Tools & script: OCR rename, utilities."}
+        ],
+        "CastoNiox YouTube": [
+          {title:"YouTube — CastoNiox", url:"youtube.com/@castoniox", snippet:"Video tutorial servicing & modding."},
+          {title:"Shor t Clips — TikTok", url:"tiktok.com/@castoniox", snippet:"Video pendek tips & trik."}
+        ],
+        "CastoNiox TikTok": [
+          {title:"TikTok @castoniox", url:"tiktok.com/@castoniox", snippet:"Shorts, montage & repair tips."}
+        ],
+        "CastoNiox GitHub": [
+          {title:"GitHub — castonymous", url:"github.com/castonymous", snippet:"Repo: tools, scripts, open-source utilities."}
+        ],
+        "OIS Grafika Shopee": [
+          {title:"OIS Grafika — Shopee", url:"shopee.co.id/oisgrafika", snippet:"Lanyard custom, ID card, paket cetak."}
+        ]
+      };
+
+      const searchQueryEl = document.getElementById('searchQuery');
+      const cursor = document.getElementById('cursor');
+      const addressText = document.getElementById('addressText');
+      const resultsEl = document.getElementById('results');
+
+      let qIndex = 0;
+
+      function typeText(targetEl, text, speed=40){
+        return new Promise((resolve)=>{
+          let i=0;
+          targetEl.textContent = '';
+          const t = setInterval(()=>{
+            targetEl.textContent = text.slice(0, i+1);
+            i++;
+            if(i>=text.length){
+              clearInterval(t);
+              setTimeout(resolve, 300);
+            }
+          }, speed);
+        });
+      }
+
+      function clearResults(){
+        resultsEl.innerHTML = '';
+      }
+
+      function showResultsFor(query){
+        clearResults();
+        const list = fakeDB[query] || [];
+        list.forEach((r, idx)=>{
+          const wrap = document.createElement('div');
+          wrap.className = 'search-line';
+          const url = document.createElement('div'); url.className='search-url'; url.textContent = r.url;
+          const title = document.createElement('div'); title.className='search-title'; title.textContent = r.title;
+          const snip = document.createElement('div'); snip.className='search-snippet'; snip.textContent = r.snippet;
+          wrap.appendChild(url);
+          wrap.appendChild(title);
+          wrap.appendChild(snip);
+          // staggered appearance
+          setTimeout(()=> resultsEl.appendChild(wrap), idx * 220);
+        });
+      }
+
+      async function runSearchCycle(){
+        const q = queries[qIndex % queries.length];
+        // update address bar (simulate)
+        addressText.textContent = `https://www.google.com/search?q=${encodeURIComponent(q).replace(/%20/g,'+')}`;
+
+        // type "Searching: <q>"
+        await typeText(searchQueryEl, q, 45);
+
+        // blink cursor for a moment
+        cursor.style.opacity = '1';
+        await new Promise(r=>setTimeout(r, 220));
+
+        // show results
+        showResultsFor(q);
+
+        // after some time, scroll results slightly to look natural
+        await new Promise(r=>setTimeout(r, 1600));
+
+        // animate a little scroll inside browser-body to show movement
+        const browserBody = document.getElementById('browserBody');
+        browserBody.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // hold for reading
+        await new Promise(r=>setTimeout(r, 2000));
+
+        // prepare for next query: clear searchQuery text with quick backspace effect
+        // quick backspace
+        for(let i = searchQueryEl.textContent.length; i>=0; i--){
+          searchQueryEl.textContent = q.slice(0, i);
+          await new Promise(rr=>setTimeout(rr, 25));
+        }
+        // clear results visually
+        resultsEl.innerHTML = '';
+        // small pause
+        await new Promise(r=>setTimeout(r, 400));
+
+        qIndex++;
+        // small delay before next cycle
+        setTimeout(runSearchCycle, 250);
+      }
+
+      // small cursor blink interval
+      setInterval(()=>{ cursor.style.opacity = (cursor.style.opacity === '0' ? '1' : '0'); }, 600);
+
+      // start cycle shortly after load so hero reveal can animate first
+      setTimeout(runSearchCycle, 600);
+    })();
   </script>
 </body>
 </html>
