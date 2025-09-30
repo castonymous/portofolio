@@ -130,7 +130,17 @@
     .socials a{display:inline-flex;gap:.4rem;align-items:center;border:1px solid var(--ring);padding:.5rem .7rem;border-radius:999px;transition:transform .2s ease}
     .socials a:hover{transform:translateY(-2px)}
     .socials svg{width:16px;height:16px}
-  </style>
+  
+/* === Mobile refinements (Casto request) === */
+.hero{ padding-bottom: clamp(160px, 54vw, 360px); } /* lebih hemat ruang di mobile */
+.hero h1{ min-height: 2.4em; } /* cegah "glitch" layout saat typing */
+.hero-mockup{ width: min(820px, 80vw); } /* kecilkan mockup */
+@media (max-width:640px){
+  .hero-mockup{ width: 86vw; }
+  .device::before{ width:120px; height:16px; }
+}
+
+</style>
 </head>
 <body>
   <!-- Nav -->
